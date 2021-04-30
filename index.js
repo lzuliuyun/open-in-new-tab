@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         新标签页打开
 // @namespace    neo_world_js
-// @version      0.1
+// @version      0.11
 // @description  open in new tab (youtube)
 // @author       neoWorld
 // @match        https://www.youtube.com/*
