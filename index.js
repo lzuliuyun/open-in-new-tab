@@ -9,20 +9,21 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
-    'use strict';
-    window.onload = () => {
-    [...document.querySelectorAll('a')].forEach((ele) => {
-      ele.setAttribute('target', '_blank');
-      const href = ele.getAttribute('href');
+(function () {
+  "use strict";
+  window.onload = () => {
+    const aEle = [...document.querySelectorAll("#dismissible a")];
+
+    aEle.forEach((ele) => {
+      ele.setAttribute("target", "_blank");
+      const href = ele.getAttribute("href");
       ele.onclick = (e) => {
         e.stopPropagation();
-        window.open(href, '_blank');
+        window.open(href, "_blank");
         return false;
       };
 
-      ele.setAttribute('href', '#')
+      ele.setAttribute("href", "#");
     });
   };
-
 })();
