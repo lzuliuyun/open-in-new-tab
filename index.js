@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name         新标签页打开
+// @name         youtube新标签页打开
 // @namespace    neo_world_js
-// @version      0.12
-// @description  open in new tab (youtube)
+// @version      0.13
+// @description  支持首页，搜索，频道在新标签打开，你懂的
 // @author       neoWorld
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?domain=youtube.com
+// @github       https://github.com/lzuliuyun/open-in-new-tab
 // @grant        none
 // ==/UserScript==
 
