@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         youtube新标签页打开
 // @namespace    neo_world_js
-// @version      0.13
+// @version      0.14
 // @description  支持首页，搜索，频道在新标签打开，你懂的
 // @author       neoWorld
 // @match        https://www.youtube.com/*
@@ -12,34 +12,6 @@
 
 (function () {
   "use strict";
-
-  const selectorPathMap = {
-    "/": {
-      observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]'],
-    },
-    "/results": {
-      observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]'],
-    },
-    "/channel": {
-      observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]'],
-    },
-    "/watch": {
-      observeEle: "#secondary",
-      aEle: ['#dismissible a[href^="/"]'],
-    },
-    "/playlist": {
-      observeEle: "#page-manager",
-      aEle: ['#content a[href^="/"]'],
-    },
-    "/user": {
-      observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]'],
-    },
-  };
-
   const updateAEle = function (selector) {
     const aEle = [...document.querySelectorAll(selector)];
 
@@ -57,16 +29,23 @@
   };
 
   const updateAEleBatch = function (aEleList) {
+    if (intervalTimes !== intervalDefaultTimes) return; // 避免重复更新
+
     aEleList.forEach((curSelector) => {
       updateAEle(curSelector);
     });
   };
 
-  const getSelectorAtCurPath = function () {
+  const getCurPath = () => {
     const { pathname } = window.location;
     const secondIndex = pathname.indexOf("/", 2);
     const path =
       secondIndex === -1 ? pathname : pathname.substr(0, secondIndex);
+    return path;
+  };
+
+  const getSelectorAtCurPath = function () {
+    const path = getCurPath();
 
     return (
       selectorPathMap[path] || {
@@ -88,14 +67,65 @@
     });
   };
 
+  const watchPathChange = function (cb = () => {}) {
+    setInterval(() => {
+      const path = window.location.pathname;
+      if (intervalTimes === 0) {
+        initPath = path;
+        intervalTimes = intervalDefaultTimes;
+      }
+
+      if (initPath !== path) {
+        intervalTimes--;
+        cb();
+      }
+    }, 100);
+  };
+
+
+  // init
+  const selectorPathMap = {
+    "/": {
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]'],
+    },
+    "/results": {
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]'],
+    },
+    "/channel": {
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]', 'ytd-grid-playlist-renderer a'],
+    },
+    "/watch": {
+      observeEle: "#secondary",
+      aEle: ['#dismissible a[href^="/"]'],
+    },
+    "/playlist": {
+      observeEle: "#page-manager",
+      aEle: ['#content a[href^="/"]'],
+    },
+    "/user": {
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]'],
+    },
+    "/c": {
+      observeEle: "#page-manager",
+      aEle: ['ytd-grid-playlist-renderer a[href^="/"]'],
+    },
+  };
+
   const selector = getSelectorAtCurPath();
+  let initPath = window.location.pathname;
+  let intervalDefaultTimes = 10;
+  let intervalTimes = intervalDefaultTimes;
 
   window.onload = () => {
     initObserver(selector);
     updateAEleBatch(selector.aEle);
   };
 
-  window.addEventListener("popstate", () => {
+  watchPathChange(() => {
     initObserver(selector);
     updateAEleBatch(selector.aEle);
   });
