@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         youtube新标签页打开
 // @namespace    neo_world_js
-// @version      0.14
-// @description  支持首页，搜索，频道在新标签打开，你懂的
+// @version      0.15
+// @description  支持首页，搜索，频道，个人主页等在新标签打开，你懂的
 // @author       neoWorld
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?domain=youtube.com
@@ -50,7 +50,7 @@
     return (
       selectorPathMap[path] || {
         observeEle: "#page-manager",
-        aEle: ["#dismissible a"],
+        aEle: ['#dismissible a[href^="/"]'],
       }
     );
   };
@@ -95,11 +95,11 @@
     },
     "/channel": {
       observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]', 'ytd-grid-playlist-renderer a'],
+      aEle: ['#dismissible a[href^="/"]', 'ytd-grid-playlist-renderer a[href^="/"]', '#channel a[href^="/"]'],
     },
     "/watch": {
-      observeEle: "#secondary",
-      aEle: ['#dismissible a[href^="/"]'],
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]', '#author-thumbnail a[href^="/"]'],
     },
     "/playlist": {
       observeEle: "#page-manager",
@@ -111,7 +111,11 @@
     },
     "/c": {
       observeEle: "#page-manager",
-      aEle: ['ytd-grid-playlist-renderer a[href^="/"]'],
+      aEle: ['ytd-grid-playlist-renderer a[href^="/"]', '#dismissible a[href^="/"]'],
+    },
+    "/feed": {
+      observeEle: "#page-manager",
+      aEle: ['#dismissible a[href^="/"]'],
     },
   };
 
