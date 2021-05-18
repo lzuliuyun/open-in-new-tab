@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         youtube新标签页打开
 // @namespace    neo_world_js
-// @version      0.15
+// @version      0.16
 // @description  支持首页，搜索，频道，个人主页等在新标签打开，你懂的
 // @author       neoWorld
 // @match        https://www.youtube.com/*
@@ -99,7 +99,7 @@
     },
     "/watch": {
       observeEle: "#page-manager",
-      aEle: ['#dismissible a[href^="/"]', '#author-thumbnail a[href^="/"]'],
+      aEle: ['#dismissible a[href^="/"]', 'ytd-video-owner-renderer a[href^="/"]'],
     },
     "/playlist": {
       observeEle: "#page-manager",
